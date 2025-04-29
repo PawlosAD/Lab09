@@ -21,6 +21,16 @@
 
 
 module demultiplexer(
-
+    input store,
+    input [1:0] sel,
+    output reg [3:0] store_out
     );
+
+    always @(*)
+    begin
+        store_out = 4'b0000;
+        store_out[sel] = store;
+    end
+
 endmodule
+
