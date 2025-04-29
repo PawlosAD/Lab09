@@ -1,19 +1,16 @@
 `timescale 1ns / 1ps
 
 module d_latch(
-    input D, E,
-    output reg Q,
-    output NotQ
+    input d,
+    input enable,
+    output reg q
+    );
 
-);
-
-    // Will contain D-Latch behavior
-    always @(D or E) begin
-    if (E) begin
-        Q <= D;
+    always @ (enable, d)
+    begin
+        if (enable)
+            q = d;
     end
-    
-  end
 
-assign NotQ = -Q;
 endmodule
+
