@@ -21,6 +21,15 @@
 
 
 module demux1(
-
+    input store,
+    input sel,
+    output reg [1:0] store_out
     );
+
+    always @(*)
+    begin
+        store_out = 2'b00;
+        store_out[sel] = store;
+    end
+
 endmodule
