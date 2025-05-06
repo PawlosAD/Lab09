@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/25/2025 11:37:36 AM
+// Create Date: 03/25/2025 03:12:29 PM
 // Design Name: 
 // Module Name: demux1
 // Project Name: 
@@ -21,15 +21,22 @@
 
 
 module demux1(
-    input store,
-    input sel,
-    output reg [1:0] store_out
-    );
+    input data,
+    input [1:0] sel,
+    output reg  A,
+    output reg  B,
+    output reg  C,
+    output reg  D
 
-    always @(*)
-    begin
-        store_out = 2'b00;
-        store_out[sel] = store;
+);
+
+    always @(*) begin 
+        case(sel)
+            2'b00: {D, C, B, A} <= {1'b0, 1'b0, 1'b0, data};
+            2'b01: {D, C, B, A} <= {1'b0, 1'b0, data, 1'b0};
+            2'b10: {D, C, B, A} <= {1'b0, data, 1'b0, 1'b0};
+            2'b11: {D, C, B, A} <= {data, 1'b0, 1'b0, 1'b0};
+        endcase
     end
 
 endmodule
