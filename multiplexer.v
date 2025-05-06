@@ -5,7 +5,7 @@
 // 
 // Create Date: 03/25/2025 09:40:44 AM
 // Design Name: 
-// Module Name: multiplexer
+// Module Name: mux
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,22 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module multiplexer(
-    input [7:0] in0,
-    input [7:0] in1,
-    input [7:0] in2,
-    input [7:0] in3,
+module mux(
+    output reg [7:0] data,
     input [1:0] sel,
-    output reg [7:0] out
-    );
+    input [7:0] A,
+    input [7:0] B,
+    input [7:0] C,
+    input [7:0] D
 
-    always @(*)
-    begin
-        case (sel)
-            2'b00: out = in0;
-            2'b01: out = in1;
-            2'b10: out = in2;
-            2'b11: out = in3;
+);
+
+    always @(*) begin 
+        case(sel)
+            2'b00: data <= A;
+            2'b01: data <= B;
+            2'b10: data <= C;
+            2'b11: data <= D;
         endcase
     end
 
