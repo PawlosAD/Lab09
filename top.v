@@ -21,19 +21,21 @@
 
 
 module top(
-    input clk,
-    input btnC,                  // central button to store
-    input [1:0] sw_addr,         // switches for address
-    input [7:0] sw_data,         // switches for data
-    output [7:0] led_out         // leds for memory output
+    input [15:0] sw,
+    input btnC,
+    output [15:0] led
+);
+    d_latch part1(
+        .D(sw[0]),
+        .Q(led[0]),
+        .NotQ(led[1]),
+        .E(btnC)
     );
-
-    memory_system mem_sys(
-        .clk(clk),
+    memory_system part2(
+        .data(sw[15:8]),
+        .addr(sw[7:6]),
         .store(btnC),
-        .data_in(sw_data),
-        .address(sw_addr),
-        .data_out(led_out)
+        .memory(led[15:8])
     );
 
 endmodule
