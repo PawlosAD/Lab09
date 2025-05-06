@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/25/2025 09:40:44 AM
+// Create Date: 03/25/2025 02:26:07 PM
 // Design Name: 
 // Module Name: memory_system
 // Project Name: 
@@ -21,35 +21,60 @@
 
 
 module memory_system(
-    input clk,
+    input [7:0] data,
     input store,
-    input [7:0] data_in,
-    input [1:0] address,
-    output [7:0] data_out
+    input [1:0] addr,
+    output [7:0] memory
+);
+
+wire [7:0] demuxData[3:0];
+wire [7:0] muxData[3:0];
+wire dmStore[3:0];
+
+genvar i;
+generate
+
+for (i = 0; i < 4; i = i + 1) begin
+
+byte_memory bm_i (
+        .data(demuxData[i]),
+        .store(dmStore[i]),
+        .memory(muxData[i])
+        );
+end
+
+endgenerate
+
+demultiplexer dmux(
+    .data(data),
+    .sel(addr),
+    .A(demuxData[0]),
+    .B(demuxData[1]),
+    .C(demuxData[2]),
+    .D(demuxData[3])
     );
 
-    wire [3:0] store_out;
-    wire [7:0] mem0, mem1, mem2, mem3;
+demux1 onebitdemux (
+    .data(store),
+    .sel(addr),
+    .A(dmStore[0]),
+    .B(dmStore[1]),
+    .C(dmStore[2]),
+    .D(dmStore[3])
+);
 
-    demultiplexer demux(
-        .store(store),
-        .sel(address),
-        .store_out(store_out)
-    );
+mux finalMux (
+    .data(memory),
+    .sel(addr),
+    .A(muxData[0]),
+    .B(muxData[1]),
+    .C(muxData[2]),
+    .D(muxData[3])
+);
 
-    byte_memory mem_a(.data(data_in), .clk(clk), .store(store_out[0]), .memory(mem0));
-    byte_memory mem_b(.data(data_in), .clk(clk), .store(store_out[1]), .memory(mem1));
-    byte_memory mem_c(.data(data_in), .clk(clk), .store(store_out[2]), .memory(mem2));
-    byte_memory mem_d(.data(data_in), .clk(clk), .store(store_out[3]), .memory(mem3));
 
-    multiplexer mux(
-        .in0(mem0),
-        .in1(mem1),
-        .in2(mem2),
-        .in3(mem3),
-        .sel(address),
-        .out(data_out)
-    );
 
-endmodule
 
+
+
+ endmodule
