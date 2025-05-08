@@ -19,16 +19,19 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+// Implements a basic level sensitive D latch with enable control
 module d_latch(
-    input D,
-    input E,
-    output reg Q,
-    output NotQ
+    input D, // The Data input
+    input E, // Enable signal
+    output reg Q, // Output that holds D's latched value when E is high
+    output NotQ // Complement of output Q
 );
 
+    // always block that triggers when D or E change. It ensures the latch responds to changes immediatly in either the enable signal or data input.
     always @(D, E) begin 
+        // Checks if enable signal is active
         if (E)
+            // Updates output Q to match input D if enable is high
             Q <= D; 
     end
 
